@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Unciv" />
+    <meta name="keywords" content="Цивилизация,Стратегия,Пошаговая стратегия" />
+    <meta name="author" content="Лев Шагалов Константинович" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %}{% endblock %}
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="icon" href="/static/img/logotip_UnCiv_site.png" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="site-header">
+        <a href="/" rel="noopener noreferrer" style="text-decoration: none">
+          <div class="header-image">
+            <img src="/static/img/logotip_UnCiv.jpg" alt="Логотип UnCiv" />
+          </div>
+          <h1>UnCiv</h1>
+          {% block header_text %} {% endblock %}
+        </a>
+      </header>
+
+      {% block nav %} {% endblock %} {% block content %} {% endblock %}
+
+      <aside class="site-sidebar">
+        <div class="widget">
+          <h3>Последние новости</h3>
+          <ul>
+            <li>
+              Последнее обновление -
+              <a
+                href="{% url 'updates' %}"
+                target="_blank"
+                rel="noopener noreferrer"
+                >На страницу обновлений игры</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="widget">
+          <h3>Игровые особенности</h3>
+          <div class="widget-image">
+            <img
+              src="/static/img/game_map.png"
+              alt="Демонстрация игрового процесса"
+            />
+          </div>
+          <ul>
+            <li>
+              <a
+                href="https://rutube.ru/video/bff47a675e0ec40fd03fb5122f239435/?r=wd"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Посмотреть короткий обзор</a
+              >
+            </li>
+            <!-- Я не смог нормально  вставить видео в сайт, оно постоянно выглядело плохо! Так что просто оставил ссылку на видео-->
+            <li>Классическая Цивилизации</li>
+            <li>Стратегия затрагивающая все эпохи</li>
+            <li>Со встроенной поддержкой модов</li>
+            <li>Более 70+ технологий</li>
+            <li>более 30+ стран на выбор</li>
+          </ul>
+        </div>
+
+        <div class="widget">
+          <h3>Системные требования</h3>
+          <ul>
+            <li>Минимальные: оперативная память: 512 MB ОЗУ</li>
+            <li>Рекомендованные: оперативная память: 2 GB ОЗУ</li>
+          </ul>
+        </div>
+
+        <div class="widget">
+          <h3>Перейти к сообществу</h3>
+          <ul>
+            <li>
+              <a href="/community" target="_blank" rel="noopener noreferrer"
+                ><button>На страницу сообщества</button></a
+              >
+            </li>
+            <li>
+              <a href="/add_article" target="_blank" rel="noopener noreferrer"
+                ><button>Добавить свою статью</button></a
+              >
+            </li>
+            <li>
+              <a href="/edit_article" target="_blank" rel="noopener noreferrer"
+                ><button>Редактировать статью</button></a
+              >
+            </li>
+            {% if not g.user %}
+            <li>
+              <a href="/registration" rel="noopener noreferrer"
+                ><button>На страницу регистрации</button></a
+              >
+            </li>
+            <li>
+              <a href="/authorization" rel="noopener noreferrer"
+                ><button>На страницу авторизации</button></a
+              >
+            </li>
+            {% else %}
+            <li>
+              <a href="/logout" rel="noopener noreferrer"
+                ><button>Выйти из профиля</button></a
+              >
+            </li>
+            <li><p>Вы авторизованы под логином: {{ g.user.login }}</p></li>
+            {% endif %}
+          </ul>
+        </div>
+      </aside>
+
+      <footer class="site-footer">
+        <p>
+          UnCiv Fan Site © 2025-2026. Все права принадлежат Yair Morgenstern
+        </p>
+        <p>
+          Этот сайт создан начинающим разработчиком для дипломной работе в
+          комьютерной академии 'top'
+        </p>
+      </footer>
+    </div>
+    {% block js %}{% endblock %}
+  </body>
+</html>

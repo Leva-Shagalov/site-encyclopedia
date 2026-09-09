@@ -1,0 +1,247 @@
+from django.shortcuts import render, redirect
+
+from .models import ArticleTopic, Article, ArticleContent, Img
+
+# def load_logged_in_user():
+#     user_login = session.get('login')
+
+#     if user_login is None:
+#         g.user = None
+#     else:
+#         # Загружаем пользователя из базы данных один раз перед запросом
+#         g.user = Users.get_or_none(login=user_login)
+
+
+def max_id_reserch(id_article): # Поиск id для не созданных статей и выдача того же id если статья уже есть
+    if not id_article:
+        article = Article.select()
+        for art in article:
+            id_res = int(art.id) + 1
+        return id_res
+    else:
+        return id_article
+
+
+
+def index(request):
+    return render(request, 'core/index.html')
+
+
+def game_updates_page(request):
+    article_updates = Article.objects.get(id=1).order_by('id')
+    return render(request, 'core/updates_game.html',
+                  {"article":article_updates})
+
+
+def community(request):
+    topic = ArticleTopic.objects.exclude(id=1) # exclude исключить из поиска
+    articles = Article.objects.exclude(topic=1)
+    if request.form:
+        topic = request.POST.get('topic')
+        if topic:
+            articles = Article.objects.filter(topic=topic)
+
+    return render(request, 'core/community.html',
+                  {"articles":articles,
+                  "topic":topic})
+
+
+# def page_article(request, article_id):
+#     article = Article.get_or_none(id = article_id)
+#     if article.classification == 4:
+#         return redirect('/updates')
+    
+#     if article:
+#         return render('article.html',
+#                       article=article)
+#     else:
+#         return 'Error404'
+
+
+
+# def add_article(request):
+#     articles = Article.select().where(Article.classification != 4)
+#     clas = Class_article.select()
+    
+#     if request.files:
+#         img = request.files['img']
+
+#         img_name = str(img.filename)
+#         arti = request.form.get('arti-id')
+
+#         article = Article.get_or_none(id = arti)
+#         if str(article.classification) == '4':
+#             return 'Статьи на странице обновлений неизменяемые!'
+        
+#         img_res = Img.get_or_none(name = img_name, article = arti)
+#         if img_res:
+#             return "Такая картинка у этой статьи уже существует!"
+
+#         app.config["UPLOAD_FOLDER"] = 'static/img/'
+        
+#         img.save(os.path.join(app.config["UPLOAD_FOLDER"], img_name))
+#         Img.create(name = img_name, article = arti)
+        
+#         return redirect('/community')
+
+
+#     if request.form:
+#         cont = request.form.get('cont')
+        
+#         if not all([cont]):
+#             return 'Пропущены поля!'
+        
+#         name = request.form.get('name')
+#         classification = request.form.get('class')
+
+
+#         article_req = request.form.get('article') # Значение может быть пустым
+
+#         id_article = max_id_reserch(article_req)
+ 
+#         article = Article.get_or_none(id = id_article)
+#         if str(article.classification) == '4':
+#             return 'Статьи на странице обновлений неизменяемые!'
+        
+#         if not article:
+#             Article.create(id = id_article, name = name, classification = classification)
+        
+#         if g.user:
+#             Content_article.create(content = cont, user = g.user.id, article = id_article)
+#         else:
+#             Content_article.create(content = cont, user = 0, article = id_article)
+
+#         return redirect('/community')
+
+#     return render('add_article.html',
+#                   article=articles,
+#                   clas=clas)
+
+
+
+# def edit_article_page(request):
+#     articles = Article.select().where(Article.classification != 4).order_by(Article.id).dicts()
+#     clas = Class_article.select().where(Class_article.id != 4)
+
+#     res = [{
+#         "arti": arti["name"],
+#         "cont":[
+#             cont for cont in Content_article.select(
+#             ).filter(Content_article.article_id==arti["id"]).order_by(Content_article.id).dicts()
+#         ]
+#         }
+#         for arti in articles
+#     ]
+
+#     if request.form:
+#         form_name = request.form.get("form")
+#         if str(form_name) == "article":
+        
+#             arti_id = request.form.get("arti-id")
+#             new_name = request.form.get("name")
+#             classification = request.form.get("class")
+
+#             print(new_name)
+
+#             if not all([new_name, arti_id]):
+#                 return 'Пропущены поля!'
+
+#             arti = Article.get_or_none(id = arti_id)
+#             if not arti:
+#                 return "Вы обратились к НЕСУЩЕСТВУЮЩЕЙ статье!"
+
+#             arti.name = new_name
+
+#             if classification:
+#                 arti.classification = classification
+
+#             arti.save()
+
+#             return redirect('/community')
+        
+#         elif str(form_name) == "content":
+#             return redirect('/community')
+        
+#         else:
+#             return "Данные отправленны не коррекстно!"
+#     import json
+#     base=json.dumps(res, ensure_ascii=False)
+#     print(base)
+#     return render('edit_article.html',
+#                   article=articles,
+#                   clas=clas,
+#                   base=base)
+
+
+
+# def get_data(request):
+#     articles = Article.select().where(Article.classification != 4).order_by(Article.id).dicts()
+#     clas = Class_article.select().where(Class_article.id != 4)
+
+#     res = [{
+#         "arti": arti["name"],
+#         "cont":[
+#             cont for cont in Content_article.select(
+#             ).filter(Content_article.article_id==arti["id"]).order_by(Content_article.id).dicts()
+#         ]
+#         }
+#         for arti in articles
+#     ]
+#     from flask import jsonify
+#     return jsonify(res)
+
+
+
+# def registration(request):
+    
+#     if request.method == 'POST':
+#         login = request.form.get('login')
+#         password = request.form.get('password-1')
+#         confirm_password = request.form.get('password-2')
+
+#         if not all([login, password, confirm_password]):
+#             return 'Пропущены поля!'
+        
+#         if password != confirm_password:
+#             return 'Пароли не совпадают!'
+        
+#         if Users.get_or_none(login = login):
+#             return 'Такой логин уже есть!'
+        
+#         Users.create(login = login, password = password)
+#         session['is_auth'] = True
+#         session['login'] = login
+
+#         return redirect('/')
+
+#     return render('registration.html')
+
+
+# def authorization(request):
+    
+#     if request.method == 'POST':
+#         login = request.form.get('login')
+#         if login == 'Аноним':
+#             return 'Невозможно авторизоваться с таким именем'
+#         password = request.form.get('password')
+
+#         if not all([login, password]):
+#             return 'Пропущены поля!'
+        
+        
+#         if Users.get_or_none(login = login, password = password):
+#             session['is_auth'] = True
+#             session['login'] = login
+#         else:
+#             return 'Такого пользователя не существует!'
+        
+#         return redirect('/')
+
+#     return render('authorization.html')
+
+# # Выход из профиля
+# def logout(request):
+#     session['is_auth'] = False
+#     session['login'] = ''
+
+#     return redirect('/')
