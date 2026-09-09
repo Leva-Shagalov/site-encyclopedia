@@ -40,6 +40,7 @@ class ArticleContent(models.Model):
     content = models.TextField()
     # user = models.ForeignKey(Users, verbose_name="создатель статьи", related_name='articleContents', on_delete=0)
     article = models.ForeignKey(Article, verbose_name="К какой статье?", related_name='article_contents', on_delete=models.CASCADE)
+    date = models.DateField(auto_now=True, verbose_name="дата написание содержания статьи")
 
     def __str__(self):
                 return self.content

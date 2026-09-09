@@ -34,16 +34,16 @@ def game_updates_page(request):
 
 
 def community(request):
-    topic = ArticleTopic.objects.exclude(id=1) # exclude исключить из поиска
+    topics = ArticleTopic.objects.exclude(id=1) # exclude исключить из поиска
     articles = Article.objects.exclude(topic=1)
-    if request.form:
-        topic = request.POST.get('topic')
+    if request.method:
+        topic = request.GET.get('topic')
         if topic:
             articles = Article.objects.filter(topic=topic)
 
     return render(request, 'core/community.html',
                   {"articles":articles,
-                  "topic":topic})
+                  "topic":topics})
 
 
 # def page_article(request, article_id):
