@@ -39,7 +39,7 @@ class Comments(models.Model):
 class ArticleContent(models.Model):
     content = models.TextField()
     # user = models.ForeignKey(Users, verbose_name="создатель статьи", related_name='articleContents', on_delete=0)
-    article = models.ForeignKey(Article, verbose_name="К какой статье?", related_name='article_contents', on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, verbose_name="К какой статье?", related_name='articlecontents', on_delete=models.CASCADE)
     date = models.DateField(auto_now=True, verbose_name="дата написание содержания статьи")
 
     def __str__(self):
@@ -51,10 +51,11 @@ class ArticleContent(models.Model):
 
 class Img(models.Model):
     name = models.FileField()
+    alt = models.CharField(max_length=255, verbose_name="если картинка не отображается выводит этот текст", blank=True, null=True)
     article_content = models.ForeignKey(ArticleContent, verbose_name="К какой статье?", related_name='imgs', on_delete=models.CASCADE)
 
     def __str__(self):
-                return self.name
+                return str(self.name)
 
     class Meta:
         verbose_name = "Картинка"

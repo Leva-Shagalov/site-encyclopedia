@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import ArticleTopic, Article, ArticleContent, Img
 
@@ -28,7 +28,7 @@ def index(request):
 
 
 def game_updates_page(request):
-    article_updates = Article.objects.get(id=1).order_by('id')
+    article_updates = Article.objects.filter(topic=1).order_by('id')
     return render(request, 'core/updates_game.html',
                   {"article":article_updates})
 
@@ -37,8 +37,8 @@ def community(request):
     topics = ArticleTopic.objects.exclude(id=1) # exclude исключить из поиска
     articles = Article.objects.exclude(topic=1)
     if request.method:
-        topic = request.GET.get('topic')
-        if topic:
+        topic = int(request.GET.get('topic'))
+        if topic != 1:
             articles = Article.objects.filter(topic=topic)
 
     return render(request, 'core/community.html',
@@ -46,16 +46,17 @@ def community(request):
                   "topic":topics})
 
 
-# def page_article(request, article_id):
-#     article = Article.get_or_none(id = article_id)
-#     if article.classification == 4:
-#         return redirect('/updates')
+def page_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    for con in article.articlecontents.all():
+        for img in con.imgs.all():
+            print(img.name)
+    if article.topic.id == 1:
+        return redirect('/updates')
     
-#     if article:
-#         return render('article.html',
-#                       article=article)
-#     else:
-#         return 'Error404'
+    return render(request, 'core/article.html',
+                  {"article":article})
+
 
 
 

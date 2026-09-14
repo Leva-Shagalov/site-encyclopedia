@@ -1,21 +1,22 @@
-{% extends 'base.html' %}
-{% block title %}<title>Страница {{ article.name }}</title>{% endblock %}
-
-{% block header_text %}<p>Добро пожаловать на страницу сообщества! Здесь вы найдёте информацию выложеную другими игроками!</p>{% endblock %}
-
-{% block content %}
-    <main class="main-content">
-        <section class="content-section">
-            <h2>{{article.classification.name}}:{{article.name}}</h2>
-            {% for content in article.content_articles %}
-                <p>{{ content.content }}</p>
-                <p>Автор: {{ content.user.login }}</p>
-                <hr/>
-            {% endfor %}
-
-            {% for img in article.imgs %}
-                <img src="/static/img/{{img.name}}" width="300" height="auto">
-            {% endfor %}
-        </section>
-    </main>
+{% extends 'core/base.html' %} {% block title %}<title>
+  Страница {{ article.title }}</title
+>{% endblock %} {% block header_text %}
+<p>
+  Добро пожаловать на страницу сообщества! Здесь вы найдёте информацию выложеную
+  другими игроками!
+</p>
+{% endblock %} {% block content %}
+<main class="main-content">
+  <section class="content-section">
+    <h2>{{article.topic.name}}:{{article.title}}</h2>
+    {% for content in article.articlecontents.all %}
+    <p>{{ content.content }}</p>
+    <!-- <p>Автор: {{ content.user.login }}</p> -->
+    {% for img in content.imgs.all %}
+    <img src="{{img.name.url}}" alt="{{img.alt}}" width="300" height="auto" />
+    {% endfor %}
+    <hr />
+    {% endfor %}
+  </section>
+</main>
 {% endblock %}

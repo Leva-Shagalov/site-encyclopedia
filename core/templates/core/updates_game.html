@@ -1,20 +1,24 @@
-{% extends 'core/base.html' %}
-{% block title %}<title>новости - UnCiv</title>{% endblock %}
-
-{% block header_text %}
-<p>В каждом обновление игра по немного изменяется, но перечислять все изменения тут слишком муторно, так что если хотите всё знать оправляйтесь на github.com где есть всё об обновлениях.</p>
-{% endblock %}
-
-{% block content %}
+{% extends 'core/base.html' %} {% block title %}<title>новости - UnCiv</title
+>{%endblock%} {% block header_text %}
+<p>
+  В каждом обновление игра по немного изменяется, но перечислять все изменения
+  тут слишком муторно, так что если хотите всё знать оправляйтесь на github.com
+  где есть всё об обновлениях.
+</p>
+{% endblock %} {% block content %}
 <main class="main-content">
-    <section class="content-section" id="unique">
-        <a href="https://github.com/yairm210/Unciv/blob/master/changelog.md#4190" target="_blank" rel="noopener noreferrer"><button>Ссылка на все обновления github.com</button></a>
-        {% for art in article %}
-            <h2>{{art.name}}</h2>
-            {% for content in art.content_articles %}
-                <p>{{content.content}}</p>
-            {% endfor %}
-        {% endfor %}
-    </section>
+  <section class="content-section" id="unique">
+    <a
+      href="https://github.com/yairm210/Unciv/blob/master/changelog.md#4190"
+      target="_blank"
+      rel="noopener noreferrer"
+      ><button>Ссылка на все обновления github.com</button></a
+    >
+    {% for art in article %}
+    <h2>{{art.title}}</h2>
+    {% for content in art.articlecontents.all %}
+    <p>{{content.content}}</p>
+    {% endfor %} {% endfor %}
+  </section>
 </main>
 {% endblock %}

@@ -28,7 +28,9 @@
   {% for article in articles %}
   <section class="content-section">
     <h2>
-      <a href="/article/{{article.id}}" rel="noopener noreferrer"
+      <a
+        href="{% url 'article' article_id=article.id %}"
+        rel="noopener noreferrer"
         >{{article.topic}}:{{article.title}}</a
       >
     </h2>
