@@ -36,9 +36,10 @@ def game_updates_page(request):
 def community(request):
     topics = ArticleTopic.objects.exclude(id=1) # exclude исключить из поиска
     articles = Article.objects.exclude(topic=1)
-    if request.method:
-        topic = int(request.GET.get('topic'))
-        if topic != 1:
+
+    topic = request.GET.get('topic')
+    if topic:
+        if topic != '1':
             articles = Article.objects.filter(topic=topic)
 
     return render(request, 'core/community.html',
@@ -60,63 +61,64 @@ def page_article(request, article_id):
 
 
 
-# def add_article(request):
-#     articles = Article.select().where(Article.classification != 4)
-#     clas = Class_article.select()
+def add_article(request):
+    articles = Article.objects.exclude(topic=1)
+    topic = ArticleTopic.objects.exclude(id=1)
     
-#     if request.files:
-#         img = request.files['img']
+    # if request.FILES:
+    #     img = request.FILES['img']
+    #     alt = request.POST.get("alt")
 
-#         img_name = str(img.filename)
-#         arti = request.form.get('arti-id')
+    #     img_name = str(img.filename)
+    #     arti = request.form.get('arti-id')
 
-#         article = Article.get_or_none(id = arti)
-#         if str(article.classification) == '4':
-#             return 'Статьи на странице обновлений неизменяемые!'
+    #     article = Article.get_or_none(id = arti)
+    #     if str(article.classification) == '4':
+    #         return 'Статьи на странице обновлений неизменяемые!'
         
-#         img_res = Img.get_or_none(name = img_name, article = arti)
-#         if img_res:
-#             return "Такая картинка у этой статьи уже существует!"
+    #     img_res = Img.get_or_none(name = img_name, article = arti)
+    #     if img_res:
+    #         return "Такая картинка у этой статьи уже существует!"
 
-#         app.config["UPLOAD_FOLDER"] = 'static/img/'
+    #     app.config["UPLOAD_FOLDER"] = 'static/img/'
         
-#         img.save(os.path.join(app.config["UPLOAD_FOLDER"], img_name))
-#         Img.create(name = img_name, article = arti)
+    #     img.save(os.path.join(app.config["UPLOAD_FOLDER"], img_name))
+    #     Img.create(name = img_name, article = arti)
         
-#         return redirect('/community')
+    #     return redirect('/community')
 
 
-#     if request.form:
-#         cont = request.form.get('cont')
+    # if request.form:
+    #     cont = request.form.get('cont')
         
-#         if not all([cont]):
-#             return 'Пропущены поля!'
+    #     if not all([cont]):
+    #         return 'Пропущены поля!'
         
-#         name = request.form.get('name')
-#         classification = request.form.get('class')
+    #     name = request.form.get('name')
+    #     classification = request.form.get('class')
 
 
-#         article_req = request.form.get('article') # Значение может быть пустым
+    #     article_req = request.form.get('article') # Значение может быть пустым
 
-#         id_article = max_id_reserch(article_req)
+    #     id_article = max_id_reserch(article_req)
  
-#         article = Article.get_or_none(id = id_article)
-#         if str(article.classification) == '4':
-#             return 'Статьи на странице обновлений неизменяемые!'
+    #     article = Article.get_or_none(id = id_article)
+    #     if str(article.classification) == '4':
+    #         return 'Статьи на странице обновлений неизменяемые!'
         
-#         if not article:
-#             Article.create(id = id_article, name = name, classification = classification)
+    #     if not article:
+    #         Article.create(id = id_article, name = name, classification = classification)
         
-#         if g.user:
-#             Content_article.create(content = cont, user = g.user.id, article = id_article)
-#         else:
-#             Content_article.create(content = cont, user = 0, article = id_article)
+    #     if g.user:
+    #         Content_article.create(content = cont, user = g.user.id, article = id_article)
+    #     else:
+    #         Content_article.create(content = cont, user = 0, article = id_article)
 
-#         return redirect('/community')
+    #     return redirect('/community')
 
-#     return render('add_article.html',
-#                   article=articles,
-#                   clas=clas)
+    return render(request, 'core/add_article.html',
+                  {"article":articles,
+                  "topic":topic})
 
 
 

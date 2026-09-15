@@ -12,9 +12,9 @@
     {% for content in article.articlecontents.all %}
     <p>{{ content.content }}</p>
     <!-- <p>Автор: {{ content.user.login }}</p> -->
-    {% for img in content.imgs.all %}
-    <img src="{{img.name.url}}" alt="{{img.alt}}" width="300" height="auto" />
-    {% endfor %}
+    <!-- {% for img in content.imgs.all %}
+    <img src="{%img.name.url}}" alt="{{img.alt}}" width="300" height="auto" />
+    {% endfor %} -->
     <hr />
     {% endfor %}
   </section>
