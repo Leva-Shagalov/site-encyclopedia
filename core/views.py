@@ -122,19 +122,20 @@ def add_article(request):
 
 
 
-# def edit_article_page(request):
-#     articles = Article.select().where(Article.classification != 4).order_by(Article.id).dicts()
-#     clas = Class_article.select().where(Class_article.id != 4)
+def edit_article_page(request):
+    articles = Article.objects.exclude(topic=1).order_by('id')
+    topic = ArticleTopic.objects.exclude(id=1)
 
-#     res = [{
-#         "arti": arti["name"],
-#         "cont":[
-#             cont for cont in Content_article.select(
-#             ).filter(Content_article.article_id==arti["id"]).order_by(Content_article.id).dicts()
-#         ]
-#         }
-#         for arti in articles
-#     ]
+    res = [{
+        "arti": article.title,
+        "cont": [
+            content 
+            for content in ArticleContent.objects.filter(article=article.id).values().order_by('id')
+        ]
+        }
+        for article in articles
+    ]
+    print(res)
 
 #     if request.form:
 #         form_name = request.form.get("form")
@@ -167,13 +168,13 @@ def add_article(request):
         
 #         else:
 #             return "Данные отправленны не коррекстно!"
-#     import json
-#     base=json.dumps(res, ensure_ascii=False)
-#     print(base)
-#     return render('edit_article.html',
-#                   article=articles,
-#                   clas=clas,
-#                   base=base)
+    # import json
+    # base=json.dumps(res, ensure_ascii=False)
+    # print(base)
+    return render(request, 'core/edit_article.html',
+                  {"article":articles,
+                  "topic":topic,
+                  "base":None})
 
 
 

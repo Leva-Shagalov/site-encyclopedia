@@ -87,23 +87,31 @@
                 href="{% url 'add_article' %}"
                 target="_blank"
                 rel="noopener noreferrer"
-                ><button>Добавить свою статью</button></a
+                ><button>
+                  Добавить свою статью(находится в разработке)
+                </button></a
               >
             </li>
             <li>
-              <a href="/edit_article" target="_blank" rel="noopener noreferrer"
-                ><button>Редактировать статью</button></a
+              <a
+                href="{% url 'edit_article' %}"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><button>
+                  Редактировать статью(не работает, возможен пересмотр задач для
+                  неё)
+                </button></a
               >
             </li>
             {% if not g.user %}
             <li>
               <a href="/registration" rel="noopener noreferrer"
-                ><button>На страницу регистрации</button></a
+                ><button>На страницу регистрации(не работает)</button></a
               >
             </li>
             <li>
               <a href="/authorization" rel="noopener noreferrer"
-                ><button>На страницу авторизации</button></a
+                ><button>На страницу авторизации(не работает)</button></a
               >
             </li>
             {% else %}
@@ -123,7 +131,7 @@
           UnCiv Fan Site © 2025-2026. Все права принадлежат Yair Morgenstern
         </p>
         <p>
-          Этот сайт создан начинающим разработчиком для дипломной работе в
+          Этот сайт создан начинающим разработчиком для дипломной работы в
           комьютерной академии 'top'
         </p>
       </footer>

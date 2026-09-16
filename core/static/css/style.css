@@ -108,6 +108,17 @@ hr {
 .nav-menu form {
   display: flex;
   align-items: center;
+  gap: 10px;
+}
+.nav-menu input {
+  color: #e8e8e8;
+  background: linear-gradient(135deg, darkcyan 0%, darkblue 100%);
+}
+.nav-menu ::-moz-placeholder {
+  color: #b8b8b8;
+}
+.nav-menu ::placeholder {
+  color: #b8b8b8;
 }
 .nav-menu select {
   color: #b8b8b8;
